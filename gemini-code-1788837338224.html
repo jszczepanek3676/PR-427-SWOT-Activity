@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR 427: SWOT Challenge V2 - USC Annenberg</title>
+    <style>
+        :root {
+            --usc-cardinal: #990000;
+            --usc-gold: #FFCC00;
+            --usc-dark-cardinal: #730000;
+            --bg-gray: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --success-green: #198754;
+            --error-red: #dc3545;
+            --success-bg: #d1e7dd;
+            --error-bg: #f8d7da;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            background-color: var(--usc-cardinal);
+            color: white;
+            padding: 24px 32px;
+            border-bottom: 4px solid var(--usc-gold);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--usc-cardinal);
+            color: white;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--usc-dark-cardinal);
+        }
+
+        .btn:active {
+            transform: scale(0.99);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Welcome Screen */
+        .welcome-card {
+            background: #fff;
+        }
+
+        .welcome-text p {
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        .info-box {
+            background-color: #f1f3f5;
+            border-left: 4px solid var(--usc-cardinal);
+            padding: 16px;
+            margin: 24px 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        .info-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--usc-cardinal);
+        }
+
+        .info-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        /* Question Screen */
+        .progress-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--usc-cardinal);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .prompt-card {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-btn {
+            background-color: white;
+            border: 2px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--usc-cardinal);
+            background-color: #fff8f8;
+        }
+
+        .option-btn.selected {
+            border-color: var(--usc-cardinal);
+            background-color: var(--usc-cardinal);
+            color: white;
+        }
+
+        /* Feedback Area */
+        .feedback-card {
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 24px;
+            display: none;
+        }
+
+        .feedback-card.correct {
+            background-color: var(--success-bg);
+            border: 1px solid #badbcc;
+            color: #0f5132;
+        }
+
+        .feedback-card.incorrect {
+            background-color: var(--error-bg);
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+
+        .feedback-status {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-details {
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .diagnostic-msg {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .explanation-text {
+            font-size: 0.95rem;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .next-btn-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Results Screen */
+        .score-summary {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .overall-score {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--usc-cardinal);
+            line-height: 1;
+            margin: 12px 0;
+        }
+
+        .performance-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background-color: var(--usc-gold);
+            color: #000;
+            font-weight: 700;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .pitfall-card {
+            background-color: #e7f5ff;
+            border-left: 4px solid #1c7ed6;
+            padding: 16px;
+            margin-bottom: 32px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        .pitfall-card h4 {
+            color: #1864ab;
+            margin-bottom: 6px;
+        }
+
+        /* Collapsible Missed Questions */
+        .collapsible-section {
+            margin-bottom: 32px;
+        }
+
+        .collapsible-trigger {
+            width: 100%;
+            background: #e9ecef;
+            border: none;
+            padding: 14px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-dark);
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible-trigger:after {
+            content: '\25BC';
+            font-size: 0.8rem;
+        }
+
+        .collapsible-trigger.active:after {
+            content: '\25B2';
+        }
+
+        .collapsible-content {
+            display: none;
+            padding-top: 16px;
+        }
+
+        .missed-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .missed-item p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .missed-item p:last-child {
+            margin-bottom: 0;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tag-incorrect {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .tag-correct {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .content {
+                padding: 20px;
+            }
+            header {
+                padding: 20px;
+            }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PR 427: Structured Inquiry</h1>
+        <h2>SWOT Analysis Challenge</h2>
+    </header>
+
+    <div class="content">
+        <!-- WELCOME SCREEN -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-text">
+                <p><strong>How Strong Are Your SWOT Skills?</strong></p>
+                <p>Separating strengths and weaknesses from opportunities and threats is one of the most important, and often most challenging, aspects of developing a SWOT analysis.</p>
+                <p>In this exercise, you'll test your ability to classify real-world data points and receive immediate feedback on your decisions.</p>
+                <p>The exercise is ungraded, so don't worry about making mistakes. In fact, that's part of the learning process. Even experienced strategists sometimes disagree on how to classify a data point.</p>
+                <p>Complete the challenge as many times as you'd like and see whether you can improve your score with each attempt.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Remember</h3>
+                <ul>
+                    <li>• <strong>Strengths</strong> and <strong>Weaknesses</strong> are internal factors.</li>
+                    <li>• <strong>Opportunities</strong> and <strong>Threats</strong> are external factors.</li>
+                </ul>
+            </div>
+
+            <button id="start-btn" class="btn">Start Challenge</button>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div id="question-screen" class="screen">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span id="question-number">Question 1 of 20</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <div id="prompt-card" class="prompt-card">
+                <!-- Data Point text injected here -->
+            </div>
+
+            <div class="section-label">Step 1: Select SWOT Classification</div>
+            <div id="swot-options" class="options-grid">
+                <!-- SWOT Buttons injected here -->
+            </div>
+
+            <div class="section-label">Step 2: Select Factor Type</div>
+            <div id="factor-options" class="options-grid">
+                <!-- Factor Buttons injected here -->
+            </div>
+
+            <button id="submit-btn" class="btn" style="display: none; margin-top: 10px;">Submit Answer</button>
+
+            <div id="feedback-card" class="feedback-card">
+                <div id="feedback-status" class="feedback-status"></div>
+                <div id="feedback-details" class="feedback-details"></div>
+                <div id="diagnostic-msg" class="diagnostic-msg" style="display: none;"></div>
+                <div id="explanation-text" class="explanation-text"></div>
+            </div>
+
+            <div id="next-btn-container" class="next-btn-container">
+                <button id="next-btn" class="btn">Next Question</button>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="results-screen" class="screen">
+            <div class="score-summary">
+                <h3>Your Results</h3>
+                <div id="overall-score" class="overall-score">0%</div>
+                <div id="performance-badge" class="performance-badge">SWOT Master</div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div id="swot-accuracy" class="metric-value">0/0</div>
+                        <div class="metric-label">SWOT Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div id="factor-accuracy" class="metric-value">0/0</div>
+                        <div class="metric-label">Internal/External Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pitfall-card" class="pitfall-card">
+                <h4>Analysis & Insights</h4>
+                <p id="pitfall-msg"></p>
+            </div>
+
+            <div id="collapsible-section" class="collapsible-section" style="display: none;">
+                <button id="collapsible-trigger" class="collapsible-trigger">Review Missed Questions</button>
+                <div id="collapsible-content" class="collapsible-content">
+                    <!-- Missed questions injected here -->
+                </div>
+            </div>
+
+            <button id="restart-btn" class="btn">Retake Challenge</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Embedded Data Source from SWOT activity.docx
+    const dataset = [
+        {
+            prompt: "Wellness Technology can create stress and guilt if goals are missed",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "This is an external market trend that may negatively impact the adoption of Oura Ring and other wearable wellness technologies."
+        },
+        {
+            prompt: "Nearly one-in-three (28%) consumers worry that relying solely on technology for health decisions could be harmful",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "This is an external market trend that may negatively affect the perception of Oura Ring and reduce the size of its potential customer base."
+        },
+        {
+            prompt: "74% of consumers at least sometimes feel concerned about how the data from wellness technology is used/protected",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "This is an external challenge that may negatively impact adoption."
+        },
+        {
+            prompt: "The global wellness industry is projected to grow to $9.8 trillion in 2029, driven partly by interest in wellness tech, like fitness trackers and health apps.",
+            correctSwot: "Opportunity",
+            correctFactor: "External",
+            explanation: "This is an external market trend that will support growth."
+        },
+        {
+            prompt: "Oura Ring’s revenue nearly doubled to $1.21 billion in the nine months ending June 30",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "An internal metric that showcases the brand’s success"
+        },
+        {
+            prompt: "While Oura Ring had largely dominated the smart ring market, competitors are emerging to dethrone it.",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "This is an external situation that may impact Oura Ring’s market share."
+        },
+        {
+            prompt: "Oura Ring is the dominant player in the smart ring market with 74% of the market share",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "Market share is an internal measure of business performance. Oura Ring’s leading market share indicates strong brand health and competitive positioning."
+        },
+        {
+            prompt: "Smart rings are among the fastest-growing wearable segments, driven by consumer demand for simpler, all-in-one health solutions.",
+            correctSwot: "Opportunity",
+            correctFactor: "External",
+            explanation: "This is an external trend that is driving growth for the smart ring market."
+        },
+        {
+            prompt: "Kim Kardashian, Prince Harry, Tom Holland and Jennifer Aniston are known celebrity fans or ambassadors of Oura Ring.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "Celebrity endorsements and adoption are internal assets that can strengthen brand awareness, credibility and consumer interest."
+        },
+        {
+            prompt: "Oura Ring is integrating proprietary survey data about menopause with 10 health care providers to support women’s care.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "Reputable partnerships are an internal asset that support credibility, awareness and authenticity."
+        },
+        {
+            prompt: "Oura is the subject of a lawsuit alleging it has deceived consumers about the accuracy of its sleep data.",
+            correctSwot: "Weakness",
+            correctFactor: "Internal",
+            explanation: "Allegations regarding product performance or marketing claims can erode consumer trust and damage brand reputation. Because brand credibility is an internal asset, these reputational concerns are considered a weakness."
+        },
+        {
+            prompt: "The US Defense Department, one of Oura’s largest customers, provides rings to select soldiers and civil servants as an employee perk.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "A large, well-known customer provides revenue, credibility, and validation for the brand. Because existing customer relationships are internal assets, this is a strength."
+        },
+        {
+            prompt: "Oura was named official wearable of Team USA and the LA28 Olympics and Paralympic Games.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "High-profile sponsorships provide visibility and credibility for the brand. Because exposure and brand credibility are internal assets, this is considered a strength."
+        },
+        {
+            prompt: "Oura Rings are well known for degrading battery life over time.",
+            correctSwot: "Weakness",
+            correctFactor: "Internal",
+            explanation: "Product performance is an internal attribute, and poor performance is classified as a weakness."
+        },
+        {
+            prompt: "Oura Rings offers less reliable workout tracking.",
+            correctSwot: "Weakness",
+            correctFactor: "Internal",
+            explanation: "Product performance is an internal attribute, and poor performance is classified as a weakness."
+        },
+        {
+            prompt: "Oura Ring launched version 5, which is a smaller and sleeker version with increased battery life.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "Innovation and product performance are internal brand attributes which are categorized as a strength."
+        },
+        {
+            prompt: "Other smart ring providers are developing more affordable versions in comparison to Oura Ring’s $399 starting price tag.",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "Lower-priced competitors create an external challenge that may attract price-sensitive consumers and reduce Oura Ring's market share. Because competitive pressures originate outside the company, they are considered a threat."
+        },
+        {
+            prompt: "The new Oura Ring 5 was called “The Smart Ring to beat” by PC Magazine.",
+            correctSwot: "Strength",
+            correctFactor: "Internal",
+            explanation: "Independent recognition from a respected publication validates Oura Ring's product performance and strengthens its reputation. Because it reinforces an existing competitive advantage, it is considered a strength."
+        },
+        {
+            prompt: "77% of US consumers aged 55+ agree that they are focused on improving their physical health in the next year",
+            correctSwot: "Opportunity",
+            correctFactor: "External",
+            explanation: "Increased consumer focus on health is a favorable external trend that could drive Oura’s growth and popularity."
+        },
+        {
+            prompt: "Many consumers are overwhelmed by the amount of data from wearable technology, such as Oura Rings.",
+            correctSwot: "Threat",
+            correctFactor: "External",
+            explanation: "Data overload is a negative consumer perception that may reduce interest in wearable technology. Because it is an external factor that could hinder category growth, it is classified as a threat."
+        }
+    ];
+
+    // State Variables
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let selectedSwot = null;
+    let selectedFactor = null;
+    let userResponses = [];
+
+    // Diagnostic Map
+    const getDiagnosticMessage = (userSwot, userFactor, correctSwot, correctFactor) => {
+        if (userSwot === correctSwot && userFactor === correctFactor) return null;
+
+        // Same Factor, Wrong Category
+        if (userFactor === correctFactor) {
+            return `You correctly identified this as an ${correctFactor.toLowerCase()} factor, but incorrectly classified it as a ${userSwot.toLowerCase()} rather than a ${correctSwot.toLowerCase()}.`;
+        }
+
+        // Correct Category, Wrong Factor
+        if (userSwot === correctSwot) {
+            return `You correctly identified this as a ${correctSwot.toLowerCase()}, but incorrectly classified its origin as an ${userFactor.toLowerCase()} factor rather than an ${correctFactor.toLowerCase()} factor.`;
+        }
+
+        // Inverse/Cross Confusion (e.g. Opportunity + Internal vs Strength + Internal, or Threat + Internal vs Weakness + Internal)
+        if (userSwot === "Opportunity" && userFactor === "Internal" && correctSwot === "Strength" && correctFactor === "Internal") {
+            return "You correctly identified this as an internal factor but incorrectly classified it as an opportunity rather than a strength.";
+        }
+        if (userSwot === "Threat" && userFactor === "Internal" && correctSwot === "Weakness" && correctFactor === "Internal") {
+            return "You correctly identified this as an internal factor but incorrectly classified it as a threat rather than a weakness.";
+        }
+        if (userSwot === "Strength" && userFactor === "External" && correctSwot === "Opportunity" && correctFactor === "External") {
+            return "You correctly identified this as an external factor but incorrectly classified it as a strength rather than an opportunity.";
+        }
+        if (userSwot === "Weakness" && userFactor === "External" && correctSwot === "Threat" && correctFactor === "External") {
+            return "You correctly identified this as an external factor but incorrectly classified it as a weakness rather than a threat.";
+        }
+
+        // Both Incorrect
+        return `You incorrectly classified both the category (${userSwot} instead of ${correctSwot}) and the origin (${userFactor} instead of ${correctFactor}).`;
+    };
+
+    // Helper Functions
+    function shuffle(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // DOM Elements
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const questionScreen = document.getElementById('question-screen');
+    const resultsScreen = document.getElementById('results-screen');
+
+    const startBtn = document.getElementById('start-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+
+    const questionNumber = document.getElementById('question-number');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressBarFill = document.getElementById('progress-bar-fill');
+    const promptCard = document.getElementById('prompt-card');
+    const swotOptionsContainer = document.getElementById('swot-options');
+    const factorOptionsContainer = document.getElementById('factor-options');
+
+    const feedbackCard = document.getElementById('feedback-card');
+    const feedbackStatus = document.getElementById('feedback-status');
+    const feedbackDetails = document.getElementById('feedback-details');
+    const diagnosticMsg = document.getElementById('diagnostic-msg');
+    const explanationText = document.getElementById('explanation-text');
+    const nextBtnContainer = document.getElementById('next-btn-container');
+
+    // Event Listeners
+    startBtn.addEventListener('click', startChallenge);
+    restartBtn.addEventListener('click', startChallenge);
+    submitBtn.addEventListener('click', handleSubmit);
+    nextBtn.addEventListener('click', handleNext);
+
+    document.getElementById('collapsible-trigger').addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = document.getElementById('collapsible-content');
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    });
+
+    function startChallenge() {
+        currentQuestions = shuffle(dataset);
+        currentIndex = 0;
+        userResponses = [];
+
+        welcomeScreen.classList.remove('active');
+        resultsScreen.classList.remove('active');
+        questionScreen.classList.add('active');
+
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const q = currentQuestions[currentIndex];
+
+        // Reset UI
+        selectedSwot = null;
+        selectedFactor = null;
+        submitBtn.style.display = 'none';
+        feedbackCard.style.display = 'none';
+        nextBtnContainer.style.display = 'none';
+
+        // Update Progress
+        const total = currentQuestions.length;
+        const currentNum = currentIndex + 1;
+        const pct = Math.round(((currentIndex) / total) * 100);
+
+        questionNumber.textContent = `Question ${currentNum} of ${total}`;
+        progressPercent.textContent = `${pct}%`;
+        progressBarFill.style.width = `${pct}%`;
+
+        // Render Prompt
+        promptCard.textContent = q.prompt;
+
+        // Render SWOT Options (Randomized)
+        const swotChoices = shuffle(["Strength", "Weakness", "Opportunity", "Threat"]);
+        swotOptionsContainer.innerHTML = '';
+        swotChoices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = choice;
+            btn.onclick = () => selectSwot(choice, btn);
+            swotOptionsContainer.appendChild(btn);
+        });
+
+        // Render Factor Options (Randomized)
+        const factorChoices = shuffle(["Internal", "External"]);
+        factorOptionsContainer.innerHTML = '';
+        factorChoices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = choice;
+            btn.onclick = () => selectFactor(choice, btn);
+            factorOptionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectSwot(val, element) {
+        if (feedbackCard.style.display === 'block') return; // Locked after submit
+        selectedSwot = val;
+        Array.from(swotOptionsContainer.children).forEach(b => b.classList.remove('selected'));
+        element.classList.add('selected');
+        checkSelectionComplete();
+    }
+
+    function selectFactor(val, element) {
+        if (feedbackCard.style.display === 'block') return; // Locked after submit
+        selectedFactor = val;
+        Array.from(factorOptionsContainer.children).forEach(b => b.classList.remove('selected'));
+        element.classList.add('selected');
+        checkSelectionComplete();
+    }
+
+    function checkSelectionComplete() {
+        if (selectedSwot && selectedFactor) {
+            submitBtn.style.display = 'block';
+        }
+    }
+
+    function handleSubmit() {
+        const q = currentQuestions[currentIndex];
+        const isSwotCorrect = selectedSwot === q.correctSwot;
+        const isFactorCorrect = selectedFactor === q.correctFactor;
+        const isBothCorrect = isSwotCorrect && isFactorCorrect;
+
+        // Record User Response
+        userResponses.push({
+            prompt: q.prompt,
+            userSwot: selectedSwot,
+            userFactor: selectedFactor,
+            correctSwot: q.correctSwot,
+            correctFactor: q.correctFactor,
+            explanation: q.explanation,
+            isSwotCorrect,
+            isFactorCorrect,
+            isBothCorrect
+        });
+
+        // Disable Buttons
+        Array.from(swotOptionsContainer.children).forEach(b => b.disabled = true);
+        Array.from(factorOptionsContainer.children).forEach(b => b.disabled = true);
+        submitBtn.style.display = 'none';
+
+        // Render Feedback
+        feedbackCard.style.display = 'block';
+        feedbackCard.className = `feedback-card ${isBothCorrect ? 'correct' : 'incorrect'}`;
+
+        if (isBothCorrect) {
+            feedbackStatus.innerHTML = `✅ Correct`;
+            feedbackDetails.innerHTML = `SWOT Classification: ${q.correctSwot}<br>Factor Type: ${q.correctFactor}`;
+            diagnosticMsg.style.display = 'none';
+        } else {
+            feedbackStatus.innerHTML = `❌ Incorrect`;
+            feedbackDetails.innerHTML = `Correct Answer: ${q.correctSwot}<br>Factor Type: ${q.correctFactor}`;
+            
+            const diag = getDiagnosticMessage(selectedSwot, selectedFactor, q.correctSwot, q.correctFactor);
+            if (diag) {
+                diagnosticMsg.textContent = diag;
+                diagnosticMsg.style.display = 'block';
+            } else {
+                diagnosticMsg.style.display = 'none';
+            }
+        }
+
+        explanationText.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+        nextBtnContainer.style.display = 'block';
+    }
+
+    function handleNext() {
+        currentIndex++;
+        if (currentIndex < currentQuestions.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        questionScreen.classList.remove('active');
+        resultsScreen.classList.add('active');
+
+        const total = userResponses.length;
+        const swotCorrectCount = userResponses.filter(r => r.isSwotCorrect).length;
+        const factorCorrectCount = userResponses.filter(r => r.isFactorCorrect).length;
+        
+        // Overall Score is calculated based on total correct choices out of total questions fully correct
+        // or total individual components. Standard methodology: percentage of fully correct prompts.
+        const totalBothCorrect = userResponses.filter(r => r.isBothCorrect).length;
+        const overallPercentage = Math.round((totalBothCorrect / total) * 100);
+
+        document.getElementById('overall-score').textContent = `${overallPercentage}%`;
+        document.getElementById('swot-accuracy').textContent = `${swotCorrectCount}/${total}`;
+        document.getElementById('factor-accuracy').textContent = `${factorCorrectCount}/${total}`;
+
+        // Performance Badge
+        const badge = document.getElementById('performance-badge');
+        if (overallPercentage >= 90) {
+            badge.textContent = "SWOT Master";
+            badge.style.backgroundColor = "#FFCC00";
+            badge.style.color = "#000";
+        } else if (overallPercentage >= 80) {
+            badge.textContent = "Strong Strategist";
+            badge.style.backgroundColor = "#2b8a3e";
+            badge.style.color = "#fff";
+        } else if (overallPercentage >= 70) {
+            badge.textContent = "Developing Strategist";
+            badge.style.backgroundColor = "#e67e22";
+            badge.style.color = "#fff";
+        } else {
+            badge.textContent = "More Practice Recommended";
+            badge.style.backgroundColor = "#dc3545";
+            badge.style.color = "#fff";
+        }
+
+        // Pitfall Analysis
+        analyzePitfalls();
+
+        // Review Missed Questions
+        renderMissedQuestions();
+    }
+
+    function analyzePitfalls() {
+        const pitfallMsg = document.getElementById('pitfall-msg');
+        
+        // Count Error Types
+        let intVsExtErrors = 0;
+        let strVsOppErrors = 0;
+        let weakVsThreatErrors = 0;
+
+        userResponses.forEach(r => {
+            if (!r.isBothCorrect) {
+                if (!r.isFactorCorrect) {
+                    intVsExtErrors++;
+                }
+                // Check category specific mismatches
+                if ((r.userSwot === 'Strength' && r.correctSwot === 'Opportunity') || 
+                    (r.userSwot === 'Opportunity' && r.correctSwot === 'Strength')) {
+                    strVsOppErrors++;
+                }
+                if ((r.userSwot === 'Weakness' && r.correctSwot === 'Threat') || 
+                    (r.userSwot === 'Threat' && r.correctSwot === 'Weakness')) {
+                    weakVsThreatErrors++;
+                }
+            }
+        });
+
+        const totalErrors = userResponses.filter(r => !r.isBothCorrect).length;
+
+        if (totalErrors === 0) {
+            pitfallMsg.textContent = "Well-Calibrated: Excellent work. Your responses demonstrate a strong understanding of the difference between internal and external factors.";
+        } else if (intVsExtErrors >= strVsOppErrors && intVsExtErrors >= weakVsThreatErrors && intVsExtErrors > 1) {
+            pitfallMsg.textContent = "Internal vs External Issue: You correctly identified positive and negative factors but frequently confused internal factors with external factors.";
+        } else if (strVsOppErrors >= weakVsThreatErrors && strVsOppErrors > 0) {
+            pitfallMsg.textContent = "Strength vs Opportunity Issue: Most incorrect responses involved distinguishing between strengths and opportunities.";
+        } else if (weakVsThreatErrors > 0) {
+            pitfallMsg.textContent = "Weakness vs Threat Issue: Most incorrect responses involved distinguishing between weaknesses and threats.";
+        } else {
+            pitfallMsg.textContent = "Internal vs External Issue: You correctly identified positive and negative factors but frequently confused internal factors with external factors.";
+        }
+    }
+
+    function renderMissedQuestions() {
+        const missedSection = document.getElementById('collapsible-section');
+        const missedContainer = document.getElementById('collapsible-content');
+        const missedList = userResponses.filter(r => !r.isBothCorrect);
+
+        missedContainer.innerHTML = '';
+
+        if (missedList.length === 0) {
+            missedSection.style.display = 'none';
+            return;
+        }
+
+        missedSection.style.display = 'block';
+
+        missedList.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'missed-item';
+            div.innerHTML = `
+                <p><strong>Prompt:</strong> ${item.prompt}</p>
+                <p><strong>Your Answer:</strong> <span class="tag tag-incorrect">${item.userSwot} (${item.userFactor})</span></p>
+                <p><strong>Correct Answer:</strong> <span class="tag tag-correct">${item.correctSwot} (${item.correctFactor})</span></p>
+                <p><strong>Explanation:</strong> ${item.explanation}</p>
+            `;
+            missedContainer.appendChild(div);
+        });
+    }
+</script>
+
+</body>
+</html>
