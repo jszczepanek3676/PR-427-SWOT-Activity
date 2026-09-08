@@ -14,7 +14,7 @@ with a particular emphasis on identifying the difference between:
 
 
 Students receive immediate feedback, explanations, scoring, and the ability to retake the challenge.
-20
+
 ## Files
 SWOTanalysis.docx
 SWOT analysis exercise.html
